@@ -6,6 +6,8 @@ replace github.com/prometheus/client_golang => github.com/prometheus/client_gola
 
 replace golang.org/x/crypto => github.com/munnerz/crypto v0.0.0-20191203200931-e1844778daa5
 
+replace github.com/sacloud/libsacloud/v2 v2.5.4 => github.com/sacloud/libsacloud/v2 v2.5.5-0.20200512040739-907561684379
+
 require (
 	github.com/Azure/azure-sdk-for-go v32.5.0+incompatible
 	github.com/Azure/go-autorest/autorest v0.9.0
@@ -33,9 +35,10 @@ require (
 	github.com/pavel-v-chernykh/keystore-go v2.1.0+incompatible
 	github.com/pkg/errors v0.8.1
 	github.com/prometheus/client_golang v1.0.0
+	github.com/sacloud/libsacloud/v2 v2.5.4
 	github.com/spf13/cobra v0.0.5
 	github.com/spf13/pflag v1.0.5
-	github.com/stretchr/testify v1.4.0
+	github.com/stretchr/testify v1.5.1
 	golang.org/x/crypto v0.0.0-20191202143827-86a70503ff7e
 	golang.org/x/net v0.0.0-20191004110552-13f9640d40b9
 	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45

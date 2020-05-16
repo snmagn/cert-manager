@@ -338,6 +338,15 @@ func ValidateACMEChallengeSolverDNS01(p *cmacme.ACMEChallengeSolverDNS01, fldPat
 			el = append(el, ValidateSecretKeySelector(&p.DigitalOcean.Token, fldPath.Child("digitalocean", "tokenSecretRef"))...)
 		}
 	}
+	if p.SakuraCloud != nil {
+		if numProviders > 0 {
+			el = append(el, field.Forbidden(fldPath.Child("sakuracloud"), "may not specify more than one provider type"))
+		} else {
+			numProviders++
+			el = append(el, ValidateSecretKeySelector(&p.SakuraCloud.AccessToken, fldPath.Child("sakuracloud", "accessTokenSecretRef"))...)
+			el = append(el, ValidateSecretKeySelector(&p.SakuraCloud.AccessSecret, fldPath.Child("sakuracloud", "accessSecretSecretRef"))...)
+		}
+	}
 	if p.RFC2136 != nil {
 		if numProviders > 0 {
 			el = append(el, field.Forbidden(fldPath.Child("rfc2136"), "may not specify more than one provider type"))

@@ -199,6 +199,8 @@ type ACMEChallengeSolverDNS01 struct {
 
 	DigitalOcean *ACMEIssuerDNS01ProviderDigitalOcean
 
+	SakuraCloud *ACMEIssuerDNS01ProviderSakuraCloud
+
 	AcmeDNS *ACMEIssuerDNS01ProviderAcmeDNS
 
 	RFC2136 *ACMEIssuerDNS01ProviderRFC2136
@@ -252,6 +254,13 @@ type ACMEIssuerDNS01ProviderCloudflare struct {
 // configuration for DigitalOcean Domains
 type ACMEIssuerDNS01ProviderDigitalOcean struct {
 	Token cmmeta.SecretKeySelector
+}
+
+// ACMEIssuerDNS01ProviderSakuraCkoud is a structure containing the DNS
+// configuration for SakuraCloud Domains
+type ACMEIssuerDNS01ProviderSakuraCloud struct {
+	AccessToken  cmmeta.SecretKeySelector `json:"accessTokenSecretRef"`
+	AccessSecret cmmeta.SecretKeySelector `json:"accessSecretSecretRef"`
 }
 
 // ACMEIssuerDNS01ProviderRoute53 is a structure containing the Route 53

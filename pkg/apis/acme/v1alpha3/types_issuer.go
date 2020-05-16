@@ -229,6 +229,9 @@ type ACMEChallengeSolverDNS01 struct {
 	DigitalOcean *ACMEIssuerDNS01ProviderDigitalOcean `json:"digitalocean,omitempty"`
 
 	// +optional
+	SakuraCloud *ACMEIssuerDNS01ProviderSakuraCloud `json:"sakuracloud,omitempty"`
+
+	// +optional
 	AcmeDNS *ACMEIssuerDNS01ProviderAcmeDNS `json:"acmedns,omitempty"`
 
 	// +optional
@@ -286,6 +289,13 @@ type ACMEIssuerDNS01ProviderCloudflare struct {
 // configuration for DigitalOcean Domains
 type ACMEIssuerDNS01ProviderDigitalOcean struct {
 	Token cmmeta.SecretKeySelector `json:"tokenSecretRef"`
+}
+
+// ACMEIssuerDNS01ProviderSakuraCkoud is a structure containing the DNS
+// configuration for SakuraCloud Domains
+type ACMEIssuerDNS01ProviderSakuraCloud struct {
+	AccessToken  cmmeta.SecretKeySelector `json:"accessTokenSecretRef"`
+	AccessSecret cmmeta.SecretKeySelector `json:"accessSecretSecretRef"`
 }
 
 // ACMEIssuerDNS01ProviderRoute53 is a structure containing the Route 53

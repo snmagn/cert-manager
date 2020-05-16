@@ -397,6 +397,40 @@ spec:
                               description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
                                 TODO: Add other useful fields. apiVersion, kind, uid?'
                               type: string
+                    sakuracloud:
+                      description: ACMEIssuerDNS01ProviderSakuraCkoud is a structure
+                        containing the DNS configuration for SakuraCloud Domains
+                      type: object
+                      required:
+                      - accessSecretSecretRef
+                      - accessTokenSecretRef
+                      properties:
+                        accessSecretSecretRef:
+                          type: object
+                          required:
+                          - name
+                          properties:
+                            key:
+                              description: The key of the secret to select from. Must
+                                be a valid secret key.
+                              type: string
+                            name:
+                              description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                TODO: Add other useful fields. apiVersion, kind, uid?'
+                              type: string
+                        accessTokenSecretRef:
+                          type: object
+                          required:
+                          - name
+                          properties:
+                            key:
+                              description: The key of the secret to select from. Must
+                                be a valid secret key.
+                              type: string
+                            name:
+                              description: 'Name of the referent. More info: https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                TODO: Add other useful fields. apiVersion, kind, uid?'
+                              type: string
                     webhook:
                       description: ACMEIssuerDNS01ProviderWebhook specifies configuration
                         for a webhook DNS01 provider, including where to POST ChallengePayload

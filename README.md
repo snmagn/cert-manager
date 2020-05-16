@@ -1,3 +1,8 @@
+<hr>
+# これは実験的に実装された非公式なさくらのクラウドDNSに追加対応されたcert-managerになります。
+動作検証とかしてないのでこれを使用して何が起こっても当方は責任を負えません、あしからず。
+<hr>
+
 <p align="center"><img src="./logo/logo.png" width="250x" /></p>
 <p align="center"><a href="https://prow.build-infra.jetstack.net/?job=ci-cert-manager-bazel">
 <!-- prow build badge, godoc, and go report card-->

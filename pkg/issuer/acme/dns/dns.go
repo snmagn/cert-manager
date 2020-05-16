@@ -41,6 +41,7 @@ import (
 	"github.com/jetstack/cert-manager/pkg/issuer/acme/dns/digitalocean"
 	"github.com/jetstack/cert-manager/pkg/issuer/acme/dns/rfc2136"
 	"github.com/jetstack/cert-manager/pkg/issuer/acme/dns/route53"
+	"github.com/jetstack/cert-manager/pkg/issuer/acme/dns/sakuracloud"
 	"github.com/jetstack/cert-manager/pkg/issuer/acme/dns/util"
 	webhookslv "github.com/jetstack/cert-manager/pkg/issuer/acme/dns/webhook"
 	"github.com/jetstack/cert-manager/pkg/logs"
@@ -67,6 +68,7 @@ type dnsProviderConstructors struct {
 	azureDNS     func(environment, clientID, clientSecret, subscriptionID, tenantID, resourceGroupName, hostedZoneName string, dns01Nameservers []string) (*azuredns.DNSProvider, error)
 	acmeDNS      func(host string, accountJson []byte, dns01Nameservers []string) (*acmedns.DNSProvider, error)
 	digitalOcean func(token string, dns01Nameservers []string) (*digitalocean.DNSProvider, error)
+	sakuraCloud  func(token, secret string, dns01Nameservers []string) (*sakuracloud.DNSProvider, error)
 }
 
 // Solver is a solver for the acme dns01 challenge.
@@ -300,6 +302,24 @@ func (s *Solver) solverForChallenge(ctx context.Context, issuer v1alpha2.Generic
 		if err != nil {
 			return nil, nil, fmt.Errorf("error instantiating digitalocean challenge solver: %s", err.Error())
 		}
+	case providerConfig.SakuraCloud != nil:
+		dbg.Info("preparing to create SakuraCloud provider")
+		apiTokenSecret, err := s.secretLister.Secrets(resourceNamespace).Get(providerConfig.SakuraCloud.AccessToken.Name)
+		if err != nil {
+			return nil, nil, fmt.Errorf("error getting sakuracloud accessToken: %s", err)
+		}
+		apiToken := string(apiTokenSecret.Data[providerConfig.SakuraCloud.AccessToken.Key])
+
+		apiSecretSecret, err := s.secretLister.Secrets(resourceNamespace).Get(providerConfig.SakuraCloud.AccessSecret.Name)
+		if err != nil {
+			return nil, nil, fmt.Errorf("error getting sakuracloud accessSecret: %s", err)
+		}
+		apiSecret := string(apiSecretSecret.Data[providerConfig.SakuraCloud.AccessSecret.Key])
+
+		impl, err = s.dnsProviderConstructors.sakuraCloud(strings.TrimSpace(apiToken), strings.TrimSpace(apiSecret), s.DNS01Nameservers)
+		if err != nil {
+			return nil, nil, fmt.Errorf("error instantiating digitalocean challenge solver: %s", err.Error())
+		}
 	case providerConfig.Route53 != nil:
 		dbg.Info("preparing to create Route53 provider")
 		secretAccessKey := ""
@@ -482,6 +502,7 @@ func NewSolver(ctx *controller.Context) (*Solver, error) {
 			azuredns.NewDNSProviderCredentials,
 			acmedns.NewDNSProviderHostBytes,
 			digitalocean.NewDNSProviderCredentials,
+			sakuracloud.NewDNSProviderCredentials,
 		},
 		webhookSolvers: initialized,
 	}, nil
